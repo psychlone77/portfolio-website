@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --font-primary: "JetBrains Mono Variable", monospace;
+  --font-secondary: "IBM Plex Mono", monospace;
+  --color-primary: --color-primary;
+  --color-secondary: --color-secondary;
+  --color-background: --color-background;
+}
+
+@layer base {
+  :root {
+    --color-primary: #000000;
+    --color-secondary: #515050;
+    --color-background: #fcecec;
+    color: var(--color-primary);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-primary: #fcecec;
+      --color-secondary: #dccece;
+      --color-background: #242424;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --color-primary: #fcecec;
+    --color-secondary: #dccece;
+    --color-background: #242424;
+  }
+
+  /* Apply the site background using the CSS variable */
+  html,
+  body {
+    height: 100%;
+    background-color: var(--color-background);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+}
