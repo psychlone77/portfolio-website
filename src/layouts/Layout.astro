@@ -25,7 +25,8 @@ const {
   pubDate,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://nithika.dev");
+const siteUrl = Astro.site ? Astro.site.origin : "https://nithikadias.pages.dev";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? siteUrl);
 
 const jsonLd =
   type === "article"
@@ -38,7 +39,7 @@ const jsonLd =
         author: {
           "@type": "Person",
           name: personalInfo.name,
-          url: "https://nithika.dev",
+          url: siteUrl,
         },
       }
     : {
@@ -54,7 +55,7 @@ const jsonLd =
           "@type": "CollegeOrUniversity",
           name: "University of Moratuwa",
         },
-        url: "https://nithika.dev",
+        url: siteUrl,
         sameAs: personalInfo.socials.filter((s) => s.url.startsWith("http")).map((s) => s.url),
       };
 ---

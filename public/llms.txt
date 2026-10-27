@@ -1,0 +1,24 @@
+# Nithika Dias
+
+> Personal portfolio and technical engineering dispatches of Nithika Dias, Associate Engineer in Application Security at LSEG and Computer Science graduate from the University of Moratuwa.
+
+## Overview
+
+A retro broadsheet newspaper and indie zine portfolio website, featuring 1-bit Bayer/Atkinson dithering, procedural 3D SVG paper relief, and optimizations achieving a 100/100/100/100 Lighthouse score.
+
+## Main Pages
+
+- [Front Page](https://nithikadias.pages.dev/): Biography, work experience, projects, awards, and technical skill directory.
+- [Blog / Dispatches](https://nithikadias.pages.dev/blog/): Technical deep-dives and engineering writeups.
+
+## Technical Dispatches
+
+- [Building a newspaper portfolio: 1-bit photos, paper grain, and bleeding ink](https://nithikadias.pages.dev/blog/1-bit-newspaper-ink-dithering/): A comprehensive guide on retro broadsheet design, Bayer and Atkinson 1-bit dithering algorithms in Python, alpha transparency, procedural 3D paper folds via GPU lighting, and SVG letterpress ink bleed.
+- [Cutting milliseconds: tuning this site for a perfect Lighthouse score](https://nithikadias.pages.dev/blog/cutting-milliseconds-lighthouse-100/): A beginner-friendly breakdown of web performance optimization under mobile 4G throttling—inlining critical CSS, preloading font waterfalls, lossless WebP compression, and zero-flash View Transitions in Astro.
+
+## Technical Topics & Skills
+
+- Languages & Runtimes: Python, TypeScript, JavaScript, Go, Bash, C++, SQL
+- Systems & Web: Astro v5, Tailwind CSS, React, Cloudflare Pages, Vite, Shiki
+- Security & Systems: Application Security, Static Code Analysis, Vulnerability Assessment, Threat Modeling
+

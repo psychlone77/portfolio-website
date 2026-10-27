@@ -92,7 +92,7 @@ const satteriTablePlugin = {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://nithikadias.pages.dev.",
+  site: "https://nithikadias.pages.dev",
   build: {
     inlineStylesheets: "always",
   },
