@@ -13,20 +13,20 @@ Use this skill whenever adding pages, components, blog articles, or image assets
 - **Voice**: Write portfolio blurbs in a casual, first-person engineering voice.
 
 ## 2. Converting Images & Logos to Newspaper Ink Prints
-All images and organization logos must be converted to 1-bit transparent RGBA PNGs using the repository's `.venv`:
+All images and organization logos must be converted to 1-bit transparent RGBA WebP or PNG images using the repository's `.venv` (prefer `.webp` for ~60% size savings):
 
 ```bash
 # Bayer 8x8 ordered dithering (portraits & photos)
-.venv/bin/python scripts/ink_print.py input.jpg -o public/output.png --mode bayer --max-width 700
+.venv/bin/python scripts/ink_print.py input.jpg -o public/output.webp --mode bayer --max-width 700
 
 # Halftone rotated newspaper dots
-.venv/bin/python scripts/ink_print.py input.jpg -o public/output-halftone.png --mode halftone --dot-size 6
+.venv/bin/python scripts/ink_print.py input.jpg -o public/output-halftone.webp --mode halftone --dot-size 6
 
 # Atkinson crisp dithering (logos & icons)
-.venv/bin/python scripts/ink_print.py logo.png -o public/logos/company.png --mode atkinson --max-width 256
+.venv/bin/python scripts/ink_print.py logo.png -o public/logos/company.webp --mode atkinson --max-width 256
 ```
 
-Always render the resulting PNG with the `ink-illustration` class so it automatically inverts from black ink `#111111` to light ink `#fcecec` in Dark Mode.
+Always render the resulting image with the `ink-illustration` class so it automatically inverts from black ink `#111111` to light ink `#fcecec` in Dark Mode.
 
 ## 3. Astro v5 Content Layer Blog (`src/content/blog/`)
 Blog posts live in `src/content/blog/*.md` and are loaded via Astro v5's `glob` loader in `src/content.config.ts`.

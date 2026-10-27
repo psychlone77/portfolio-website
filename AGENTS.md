@@ -23,9 +23,10 @@ Welcome to Nithika Dias's portfolio & blog repository (`portfolio-website`). Rea
 2. **Processing Images & Logos**:
    - Always use the local Python virtual environment (`.venv/bin/python`) when running Python scripts:
      ```bash
-     bun run ink <input_image> -o <output_png> --mode bayer|halftone|atkinson
+     bun run ink <input_image> -o <output_webp_or_png> --mode bayer|halftone|atkinson
      ```
-   - Apply the `.ink-illustration` class to all 1-bit transparent PNGs so they invert cleanly in Dark Mode.
+   - Prefer lossless WebP (`.webp`) for superior compression (~60% bandwidth reduction).
+   - Apply the `.ink-illustration` class to all 1-bit transparent images so they invert cleanly in Dark Mode.
 3. **Adding Blog Posts**:
    - Place `.md` files in `src/content/blog/` with frontmatter matching the schema in `src/content.config.ts` (`title`, `description`, `pubDate`, `tags`, optional `heroImage`, `draft`).
 

@@ -54,9 +54,10 @@ We pair a high-contrast editorial serif for broadsheet headlines with a crisp te
 Full-color photographs and smooth gradients are **never** placed directly onto the page. All raster portraits, company logos, and blog illustrations must look like 1-bit newspaper ink prints:
 
 1. **Conversion via Python CLI**:
-   Use `.venv/bin/python scripts/ink_print.py` (or `bun run ink`) to convert source images into 1-bit RGBA PNGs where:
+   Use `.venv/bin/python scripts/ink_print.py` (or `bun run ink`) to convert source images into 1-bit RGBA WebP or PNG images where:
    - Ink pixels = `(0, 0, 0, 255)` (pure black)
    - Paper pixels = `(0, 0, 0, 0)` (100% transparent alpha so the underlying `.paper-texture` shows through)
+   - WebP lossless format (`.webp`) is preferred for superior compression (~60% bandwidth savings).
 2. **Supported Dithering Modes**:
    - `--mode bayer`: 8x8 Bayer ordered dithering (crosshatch retro computer-press texture; used for portraits & hero images).
    - `--mode halftone`: Classic angled newspaper dot matrix screen.

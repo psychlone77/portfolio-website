@@ -58,7 +58,7 @@ export const personalInfo: PersonalInfo = {
     "I'm an Associate Engineer in Application Security at LSEG (London Stock Exchange Group) and a Computer Science & Engineering graduate from the University of Moratuwa, specializing in Cyber Security.",
     "Most of my work sits between backend engineering and security. I enjoy building reliable systems across Python, TypeScript/React, .NET, and PostgreSQL, and spending my weekends on competitive programming and Capture The Flag (CTF) security challenges.",
   ],
-  imageUrl: "/profile-image.png",
+  imageUrl: "/profile-image.webp",
   socials: [
     {
       label: "GitHub",
@@ -91,7 +91,7 @@ export const experiences: Experience[] = [
     story:
       "Working on application security across LSEG's engineering teams—performing security reviews, identifying vulnerabilities early in the development lifecycle, and helping teams ship safer software.",
     tags: ["Application Security", "Cloud Security"],
-    logo: "/logos/lseg.png",
+    logo: "/logos/lseg.webp",
   },
   {
     company: "University of Moratuwa",
@@ -102,7 +102,7 @@ export const experiences: Experience[] = [
     story:
       "Running weekly C++ lab sessions for first-year students. I help them work through core data structures, algorithm complexity, and debugging during their practical assignments.",
     tags: ["C++", "Data Structures", "Algorithms"],
-    logo: "/logos/uom.png",
+    logo: "/logos/uom.webp",
   },
   {
     company: "Creative Software",
@@ -113,7 +113,7 @@ export const experiences: Experience[] = [
     story:
       "Built a Dockerized technical drawing tool with React, Vite, and Python ML predictions to speed up manual drafting. Also developed a 3D structural visualization module in Three.js and React Three Fiber backed by .NET and MSSQL, and deployed container images to Azure with pluggable Azure SQL and MongoDB connectors.",
     tags: ["React", "Three.js", "Python", ".NET", "MSSQL", "Azure", "Docker"],
-    logo: "/logos/creative-software.png",
+    logo: "/logos/creative-software.webp",
   },
   {
     company: "Upwork & Private Clients",
@@ -124,7 +124,7 @@ export const experiences: Experience[] = [
     story:
       "Building and deploying web applications and high-performance landing pages for clients, handling LK Domain Registry and Netlify DNS configurations, and automating internal workflows using Google Apps Script.",
     tags: ["Next.js", "SEO", "DNS", "Google Apps Script"],
-    logo: "/logos/upwork.png",
+    logo: "/logos/upwork.webp",
   },
 ];
 
@@ -221,7 +221,7 @@ export const education: EducationItem[] = [
       "Dean's List: Semesters 3, 5, 6, 7 & 8",
       "Specialization: Cyber Security",
     ],
-    logo: "/logos/uom.png",
+    logo: "/logos/uom.webp",
   },
   {
     institution: "Lyceum International School, Nugegoda",
@@ -230,6 +230,6 @@ export const education: EducationItem[] = [
     endDate: "2020",
     note: "Served as Senior Prefect (2018 – 2019) and Deputy Athletic Captain (2018 – 2019).",
     badges: ["G.C.E. A/L 2020: 3 A's", "G.C.S.E. O/L 2018: 6 Distinctions"],
-    logo: "/logos/lyceum.png",
+    logo: "/logos/lyceum.webp",
   },
 ];

@@ -59,6 +59,9 @@ const satteriKatexPlugin = {
 // https://astro.build/config
 export default defineConfig({
   site: "https://nithika.dev",
+  build: {
+    inlineStylesheets: "always",
+  },
   vite: {
     plugins: [tailwindcss()],
   },

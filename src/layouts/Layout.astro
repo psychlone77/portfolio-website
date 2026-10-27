@@ -5,7 +5,10 @@ import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "@fontsource/ibm-plex-mono/600.css";
 import "@fontsource-variable/playfair-display";
-import "katex/dist/katex.min.css";
+import playfairWoff2 from "@fontsource-variable/playfair-display/files/playfair-display-latin-wght-normal.woff2?url";
+import ibmPlexMono400 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url";
+import ibmPlexMono500 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2?url";
+import ibmPlexMono600 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2?url";
 import { personalInfo } from "../data/portfolio";
 
 interface Props {
@@ -77,6 +80,48 @@ const jsonLd =
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <title>{title}</title>
+
+    <!-- Critical Assets Preload for Instant FCP & LCP (Eliminates Chaining & Layout Shift) -->
+    <link
+      rel="preload"
+      href={playfairWoff2}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href={ibmPlexMono400}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href={ibmPlexMono500}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href={ibmPlexMono600}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    {
+      (Astro.url.pathname === "/" || Astro.url.pathname === "") && (
+        <link
+          rel="preload"
+          href="/profile-image.webp"
+          as="image"
+          type="image/webp"
+          fetchpriority="high"
+        />
+      )
+    }
+
     <ClientRouter />
 
     <!-- Prevent Flash of Unstyled Content (FOUC) on initial load & view transition swaps -->

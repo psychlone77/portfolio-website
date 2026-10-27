@@ -84,6 +84,11 @@ const { name, tagline, bio, imageUrl, socials = [] } = Astro.props;
               <img
                 src={imageUrl}
                 alt={name}
+                width="410"
+                height="411"
+                fetchpriority="high"
+                loading="eager"
+                decoding="async"
                 class="w-full h-full object-cover object-top"
               />
             </div>

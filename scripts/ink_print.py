@@ -286,7 +286,11 @@ def main() -> None:
 
     out_img = build_rgba_output(width, height, ink_mask, alpha_bytes, opaque_bg=args.opaque_bg)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    out_img.save(args.output, format="PNG")
+    fmt = "WEBP" if args.output.suffix.lower() == ".webp" else "PNG"
+    if fmt == "WEBP":
+        out_img.save(args.output, format="WEBP", lossless=True, quality=100, method=6)
+    else:
+        out_img.save(args.output, format="PNG", optimize=True)
     print(f"[ink_print] Saved {args.mode} ink print -> {args.output} ({out_img.width}x{out_img.height})")
 
 
