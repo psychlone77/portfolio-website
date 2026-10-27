@@ -56,7 +56,7 @@ export const personalInfo: PersonalInfo = {
   location: "Colombo, Sri Lanka",
   bio: [
     "I'm an Associate Engineer in Application Security at LSEG (London Stock Exchange Group) and a Computer Science & Engineering graduate from the University of Moratuwa, specializing in Cyber Security.",
-    "Most of my work sits between backend engineering and security. I enjoy building reliable systems across Python, TypeScript/React, .NET, and PostgreSQL, and spending my weekends on competitive programming and Capture The Flag (CTF) security challenges.",
+    "Most of my work sits between application security testing with a little bit of software and cloud development as well. On the weekends, I try to keep up with all the new security research and tools in the space, mostly through Youtube and Articles.",
   ],
   imageUrl: "/profile-image.webp",
   socials: [

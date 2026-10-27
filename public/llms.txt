@@ -13,8 +13,8 @@ A retro broadsheet newspaper and indie zine portfolio website, featuring 1-bit B
 
 ## Technical Dispatches
 
-- [Building a newspaper portfolio: 1-bit photos, paper grain, and bleeding ink](https://nithikadias.pages.dev/blog/1-bit-newspaper-ink-dithering/): A comprehensive guide on retro broadsheet design, Bayer and Atkinson 1-bit dithering algorithms in Python, alpha transparency, procedural 3D paper folds via GPU lighting, and SVG letterpress ink bleed.
-- [Cutting milliseconds: tuning this site for a perfect Lighthouse score](https://nithikadias.pages.dev/blog/cutting-milliseconds-lighthouse-100/): A beginner-friendly breakdown of web performance optimization under mobile 4G throttling—inlining critical CSS, preloading font waterfalls, lossless WebP compression, and zero-flash View Transitions in Astro.
+- [Building a Newspaper Portfolio with 1-Bit Dithering](https://nithikadias.pages.dev/blog/1-bit-newspaper-ink-dithering/): How I built a retro broadsheet portfolio with Python 1-bit dithering, procedural 3D paper grain, and SVG letterpress ink bleed.
+- [Cutting Milliseconds: Scoring 100 on Lighthouse](https://nithikadias.pages.dev/blog/cutting-milliseconds-lighthouse-100/): How I tuned this retro broadsheet site for a perfect 100 Lighthouse score using inlined CSS, font preloads, and zero-flash transitions.
 
 ## Technical Topics & Skills
 

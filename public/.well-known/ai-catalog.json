@@ -1,17 +1,15 @@
 {
-  "$schema": "https://agenticresourcediscovery.org/schemas/v1/ai-catalog.schema.json",
   "specVersion": "1.0",
   "host": {
-    "name": "Nithika Dias",
-    "domain": "nithikadias.pages.dev",
-    "description": "Portfolio and technical engineering dispatches of Nithika Dias",
-    "url": "https://nithikadias.pages.dev"
+    "displayName": "Nithika Dias",
+    "identifier": "did:web:nithikadias.pages.dev",
+    "documentationUrl": "https://nithikadias.pages.dev/llms.txt"
   },
   "entries": [
     {
-      "identifier": "urn:ai:nithikadias.pages.dev:site:portfolio",
+      "identifier": "urn:air:nithikadias:portfolio:site",
       "displayName": "Nithika Dias Portfolio & Dispatches",
-      "type": "text/markdown",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
       "url": "https://nithikadias.pages.dev/llms.txt",
       "description": "Structured developer portfolio, project writeups, and technical blog posts",
       "representativeQueries": [
@@ -19,11 +17,12 @@
         "How did Nithika Dias build the 1-bit newspaper dithering pipeline?",
         "How did Nithika Dias achieve a 100 Lighthouse score on Astro?"
       ],
-      "capabilities": [
-        "ReadPortfolio",
-        "ReadBlogPosts"
+      "tags": [
+        "portfolio",
+        "dispatches",
+        "security",
+        "web-performance"
       ]
     }
   ]
 }
-

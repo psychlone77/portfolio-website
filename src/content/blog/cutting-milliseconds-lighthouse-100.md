@@ -1,6 +1,6 @@
 ---
-title: "Cutting milliseconds: tuning this site for a perfect Lighthouse score"
-description: "How I optimized this retro broadsheet website to score a flawless 100/100/100/100 on Google Lighthouse: inlining critical CSS, preloading font waterfalls, lossless WebP, and zero-flash View Transitions."
+title: "Cutting Milliseconds: Scoring 100 on Lighthouse"
+description: "How I tuned this retro broadsheet site for a perfect 100 Lighthouse score using inlined CSS, font preloads, and zero-flash transitions."
 pubDate: 2026-10-27
 tags: ["performance", "astro", "web-vitals", "accessibility"]
 draft: false

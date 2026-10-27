@@ -1,6 +1,6 @@
 ---
-title: "Building a newspaper portfolio: 1-bit photos, paper grain, and bleeding ink"
-description: "How I turned my portfolio into an indie broadsheet: 1-bit Bayer and Atkinson dithering in Python, procedural 3D paper grain in SVG, and making digital text bleed like real ink."
+title: "Building a Newspaper Portfolio with 1-Bit Dithering"
+description: "How I built a retro broadsheet portfolio with Python 1-bit dithering, procedural 3D paper grain, and SVG letterpress ink bleed."
 pubDate: 2026-10-25
 updatedDate: 2026-10-27
 tags: ["design", "python", "svg", "frontend"]
