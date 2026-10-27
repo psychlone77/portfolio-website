@@ -56,6 +56,42 @@ const satteriKatexPlugin = {
   },
 };
 
+/**
+ * Sätteri HAST plugin that wraps markdown <table> elements in a responsive
+ * scrollable container (<div class="newspaper-table-wrapper">) for mobile viewports.
+ */
+const satteriTablePlugin = {
+  name: "satteri-table-wrap",
+  element: {
+    filter: ["table"],
+    /**
+     * @param {any} node
+     * @param {any} ctx
+     */
+    visit(node, ctx) {
+      const parent = ctx.parent(node);
+      const classes = Array.isArray(parent?.properties?.className)
+        ? parent.properties.className
+        : [];
+      if (classes.includes("newspaper-table-wrapper")) return;
+
+      ctx.replaceNode(node, {
+        type: "element",
+        tagName: "div",
+        properties: { className: ["newspaper-table-wrapper"] },
+        children: [
+          {
+            type: "element",
+            tagName: "table",
+            properties: node.properties,
+            children: node.children,
+          },
+        ],
+      });
+    },
+  },
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://nithika.dev",
@@ -74,7 +110,7 @@ export default defineConfig({
       features: {
         math: true,
       },
-      hastPlugins: [satteriKatexPlugin],
+      hastPlugins: [satteriKatexPlugin, satteriTablePlugin],
     }),
     shikiConfig: {
       themes: {

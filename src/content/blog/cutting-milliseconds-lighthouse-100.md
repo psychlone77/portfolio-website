@@ -6,11 +6,11 @@ tags: ["performance", "astro", "web-vitals", "accessibility"]
 draft: false
 ---
 
-Whenever developers talk about website performance, you often hear advice like "use a CDN", "minify your JavaScript", or "compress your images". 
+Whenever developers talk about website performance, you often hear advice like "use a CDN", "minify your JavaScript", or "compress your images".
 
 That advice is fine for getting a site to an 85 or 90 on Google Lighthouse. But if you want to hit a **flawless 100/100/100/100** across Performance, Accessibility, Best Practices, and SEO—especially when Lighthouse tests on an emulated low-end mobile phone (Moto G Power) throttled to a Slow 4G connection—every single millisecond and byte matters.
 
-```
+```plaintext
 +---------------------------------------------------------+
 |                  LIGHTHOUSE AUDIT REPORT                |
 +=========================================================+
@@ -19,9 +19,10 @@ That advice is fine for getting a site to an 85 or 90 on Google Lighthouse. But 
 +---------------------------------------------------------+
 ```
 
-When I first ran Lighthouse on this portfolio, the results were respectable: Accessibility, Best Practices, and SEO were already at 100, but **Performance was stuck at 98**. 
+When I first ran Lighthouse on this portfolio, the results were respectable: Accessibility, Best Practices, and SEO were already at 100, but **Performance was stuck at 98**.
 
 98 is good, but looking closely at the audit revealed real bottlenecks:
+
 - A render-blocking CSS request was costing ~400 ms of delay.
 - The browser was chaining network requests for web fonts.
 - Image transfer sizes were higher than necessary.
@@ -40,13 +41,13 @@ When a browser downloads an HTML file, it parses it from top to bottom. If it en
 <link rel="stylesheet" href="/_astro/Header.CGqCsfX8.css" />
 ```
 
-The browser hits an emergency brake. 
+The browser hits an emergency brake.
 
-Because CSS defines colors, layouts, and font sizes, the browser refuses to render any HTML below that tag until the CSS file is completely downloaded and parsed. If it didn't wait, you would see an ugly unstyled flash of raw HTML before the styles applied (known as Flash of Unstyled Content, or FOUC). 
+Because CSS defines colors, layouts, and font sizes, the browser refuses to render any HTML below that tag until the CSS file is completely downloaded and parsed. If it didn't wait, you would see an ugly unstyled flash of raw HTML before the styles applied (known as Flash of Unstyled Content, or FOUC).
 
 This is why stylesheets are called **Render-Blocking Resources**.
 
-```
+```plaintext
 TRADITIONAL EXTERNAL CSS WATERFALL:
 Browser receives HTML  [================>]
 Finds <link rel="stylesheet">            |
@@ -79,7 +80,7 @@ export default defineConfig({
 
 Instead of generating an external `<link rel="stylesheet">`, Astro injects the CSS directly inside a `<style>` block in the initial HTML document.
 
-```
+```plaintext
 INLINED CSS WATERFALL:
 Browser receives HTML (containing <style>) [================>]
 Styles are ALREADY present!                                  |
@@ -93,6 +94,7 @@ First Contentful Paint (FCP)                                 v (Page renders imm
 ## 2. Flattening the Font Waterfall (Zero Layout Shift)
 
 Typography is the core of this retro broadsheet newspaper aesthetic. The site uses two primary typefaces:
+
 - **Playfair Display Variable** for headlines and title broadsheets
 - **IBM Plex Mono** (weights 400, 500, and 600) for body copy, timestamps, and metadata
 
@@ -106,13 +108,13 @@ The naive way to load custom web fonts is via standard CSS:
 }
 ```
 
-Here is the trap: **Browsers are lazy by default.** 
+Here is the trap: **Browsers are lazy by default.**
 
 When the browser parses `@font-face` in your CSS, it does *not* download the font file immediately. It waits until the DOM tree is built, matches CSS selectors, and finds an element on the screen that actually uses that font family.
 
 This creates a nasty 3-step waterfall:
 
-```
+```plaintext
 NAIVE FONT LOADING CHAIN:
 1. HTML Download  [========>]
 2. CSS Download             [========>]
@@ -120,6 +122,7 @@ NAIVE FONT LOADING CHAIN:
 ```
 
 If the font takes too long to load, one of two bad things happens:
+
 1. **FOIT (Flash of Invisible Text):** The browser leaves the text completely blank until the font arrives.
 2. **FOUT (Flash of Unstyled Text) & CLS:** The browser renders a fallback font (like Times New Roman), and when the custom font arrives $200\text{ ms}$ later, the text shifts size, jumping page layout around.
 
@@ -173,7 +176,7 @@ import ibmPlexMono600 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-
 </head>
 ```
 
-```
+```plaintext
 PARALLEL PRELOAD PIPELINE:
 HTML arrives   [================>]
 Font Preloads       [============]  (Downloaded in parallel with DOM construction!)
@@ -188,7 +191,7 @@ Page Paints    [Text renders instantly with custom fonts]
 
 As discussed in my previous post on dithering, this website renders photos and logos as 1-bit ink masks with alpha transparency.
 
-Originally, all images were exported as PNG (`image/png`). While PNG is lossless, its DEFLATE compression algorithm was designed in the 1990s. 
+Originally, all images were exported as PNG (`image/png`). While PNG is lossless, its DEFLATE compression algorithm was designed in the 1990s.
 
 Modern **lossless WebP** uses advanced predictive filtering and LZ77 entropy coding, which compresses repetitive sparse 1-bit patterns far more efficiently.
 
@@ -211,6 +214,7 @@ bun run ink public/profile-image-src.jpg -o public/profile-image.webp --mode bay
 Lighthouse measures **Largest Contentful Paint (LCP)**: how long it takes for the largest visual block above the fold to appear. On the homepage, that block is my profile avatar.
 
 To ensure the avatar renders with zero delay:
+
 1. We added an explicit `<link rel="preload" as="image" href="/profile-image.webp" fetchpriority="high">` in `<head>`.
 2. On the `<img>` tag itself, we specified `loading="eager"` and `fetchpriority="high"`.
 3. We set explicit `width="160"` and `height="160"` attributes so the browser could reserve the space before the image bytes even finished downloading, preventing any layout shift.
@@ -280,7 +284,7 @@ By injecting the theme class directly into `event.newDocument` before the swap, 
 
 ### Bug B: Preserving Procedural SVG Filters
 
-As explained in the design post, this site uses SVG filters (`#newspaper-crumple-relief` and `#global-print-grain`) to create physical paper grain and folds. 
+As explained in the design post, this site uses SVG filters (`#newspaper-crumple-relief` and `#global-print-grain`) to create physical paper grain and folds.
 
 During View Transitions, if the SVG filter element is destroyed and recreated, the GPU has to recompile the noise shaders, causing an audible hitch or visual flicker.
 
@@ -324,4 +328,3 @@ Here is what the numbers look like after applying all these optimizations:
 | **Page Transitions** | White flash in dark mode | **Seamless ink-fade** | Persistent theme state |
 
 Achieving a 100 on Lighthouse isn't about using magical tricks or disabling features. It's about respecting the browser's critical rendering path: giving it what it needs immediately, deferring what it doesn't, and making sure every single byte sent over the wire earns its place.
-

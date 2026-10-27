@@ -7,11 +7,11 @@ tags: ["design", "python", "svg", "frontend"]
 draft: false
 ---
 
-Most developer portfolios look practically identical. You usually get a dark mode background, purple and cyan gradient badges, soft blurred glassmorphism cards, and a razor-sharp 4K headshot. 
+Most developer portfolios look practically identical. You usually get a dark mode background, purple and cyan gradient badges, soft blurred glassmorphism cards, and a razor-sharp 4K headshot.
 
 I wanted something completely different. I wanted my site to feel like a tactile, tangible physical object—specifically, a weathered 1980s broadsheet newspaper or an indie printing press zine.
 
-```
+```plaintext
 +-------------------------------------------------------+
 |  THE DAILY DISPATCH            Vol. 1 -- Oct 2026     |
 +=======================================================+
@@ -39,7 +39,7 @@ Here is the breakdown of how I solved each of these problems using Python image 
 
 ## 1. Turning Photos into Pure Ink (1-Bit Dithering)
 
-In computer graphics, a standard color photograph stores 24 bits per pixel: 8 bits for Red, 8 for Green, and 8 for Blue ($256 \times 256 \times 256 \approx 16.7\text{ million colors}$). 
+In computer graphics, a standard color photograph stores 24 bits per pixel: 8 bits for Red, 8 for Green, and 8 for Blue ($256 \times 256 \times 256 \approx 16.7\text{ million colors}$).
 
 A newspaper printing press, however, has no grey ink. It only has black ink and blank paper. In digital terms, that is a **1-bit image**: every pixel is either a `1` (ink) or a `0` (paper).
 
@@ -60,7 +60,7 @@ else:
 
 This is called **hard thresholding**, and the result on human faces is terrifying:
 
-```
+```plaintext
 Original Gradient:       [ 10% | 30% | 50% | 70% | 90% ]
 Hard Threshold (< 50%):  [  0  |  0  |  1  |  1  |  1  ]
                          (All gentle shading is wiped out)
@@ -72,7 +72,7 @@ Anything slightly darker than medium gray becomes a solid black puddle, and anyt
 
 To preserve shades of gray without actual gray ink, printers use **dithering**. Dithering exploits a quirk of human vision: when tiny black dots are placed close together on a bright background, your eyes and brain blend them together, perceiving smooth shades of gray.
 
-```
+```plaintext
 Dark Shadow (75% ink):   [ * * * . ]
 Midtone Gray (50% ink):  [ * . * . ]
 Bright Light (25% ink):  [ . . * . ]
@@ -87,7 +87,7 @@ For my profile photo, I wanted a uniform, crosshatch press look reminiscent of v
 
 Instead of comparing every pixel to a fixed threshold like `128`, we compare each pixel $(x, y)$ against a repeating grid of spatial thresholds known as the **Bayer Matrix**. For an $8 \times 8$ matrix, the formula cycles through 64 distinct threshold values:
 
-```
+```plaintext
 Repeating 4x4 Bayer Threshold Concept:
 +----+----+----+----+
 |  0 |  8 |  2 | 10 |  <- Scaled from 0 to 255 across
@@ -122,7 +122,7 @@ Because each pixel is decided purely by its coordinates without depending on its
 
 ### Technique B: Atkinson Dithering (For Logos and Crests)
 
-When I tried Bayer dithering on intricate university crests (like the University of Moratuwa coat of arms), the crosshatch pattern broke the fine line art. 
+When I tried Bayer dithering on intricate university crests (like the University of Moratuwa coat of arms), the crosshatch pattern broke the fine line art.
 
 Standard **Floyd–Steinberg** error diffusion wasn't great either. Floyd–Steinberg takes the rounding error from deciding a pixel and distributes $100\%$ of it to neighboring pixels. On small graphics with sharp contrast, that $100\%$ error propagation causes "dirty" speckles and worms in plain white areas.
 
@@ -132,7 +132,7 @@ $$e = \frac{\text{Pixel}_{\text{original}} - \text{Pixel}_{\text{quantized}}}{8}
 
 The error is distributed across 6 neighboring pixels:
 
-```
+```plaintext
            [ Current Pixel ] -> (Right +1): +e -> (Right +2): +e
  (Down-Left -1): +e -> (Down): +e -> (Down-Right +1): +e
                        (Down +2): +e
@@ -164,11 +164,11 @@ for y in range(height):
 
 ### The Alpha Channel Trick & WebP Savings
 
-Traditional black-and-white graphics output ink as black (`RGB(0, 0, 0)`) and paper as white (`RGB(255, 255, 255)`). 
+Traditional black-and-white graphics output ink as black (`RGB(0, 0, 0)`) and paper as white (`RGB(255, 255, 255)`).
 
 If you put a white box on top of textured paper, the illusion shatters immediately:
 
-```
+```plaintext
 [ WRONG: Solid White Box ]       [ RIGHT: Transparent Alpha ]
 +-------------------------+     +-------------------------+
 | Paper Grain Background  |     | Paper Grain Background  |
@@ -187,6 +187,7 @@ Instead of white pixels, the script creates **transparent pixels**:
 Because non-ink pixels are fully transparent, the real browser paper texture, creases, and background color show through the gaps between the dots!
 
 Furthermore, converting these images from 32-bit PNGs to lossless `.webp` using Python (`Pillow`) saved **~63% of the bandwidth**:
+
 - Profile avatar: $45\text{ KiB} \rightarrow 16.4\text{ KiB}$
 - University & company logos: $\approx 12\text{ KiB} \rightarrow 3.5\text{ KiB}$ each
 
@@ -200,7 +201,7 @@ In a physical printing press, metal lead type coated in oily ink is pressed firm
 
 In a web browser, fonts are rendered with mathematical Bézier curves. They are too sharp. They looked like stickers hovering above the paper.
 
-```
+```plaintext
 Digital Vector (Too clean):   |---|
                               |   |  (Perfect, sterile, digital lines)
                               |---|
@@ -295,7 +296,7 @@ Many retro websites achieve paper textures by downloading a $2\text{ MB}$ seamle
 
 Instead, this site generates its paper relief **procedurally using the browser GPU**:
 
-```
+```plaintext
 [ feTurbulence (Noise) ] ---> [ Heightmap of Paper Bumps ]
                                        |
                                        v
@@ -362,9 +363,10 @@ To tie the typography, 1-bit photos, and 3D paper together into a cohesive visua
 }
 ```
 
-The key detail is `mix-blend-mode: hard-light`. 
+The key detail is `mix-blend-mode: hard-light`.
 
 Unlike `multiply` (which only darkens) or `screen` (which only lightens), `hard-light` blends relative to $50\%$ gray:
+
 - Bright paper areas receive subtle dark specks.
 - Solid black ink letters receive faint paper-colored micro-pores.
 

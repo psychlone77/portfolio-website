@@ -76,6 +76,7 @@
     min-height: 100vh;
     overflow-x: hidden;
     background-color: var(--color-background);
+    background-attachment: fixed;
     background-image:
       radial-gradient(
         ellipse at 50% 30%,
@@ -163,9 +164,9 @@
   }
 }
 
-/* 1. Organic 3D Paper Crumple, Bumps & Fold Marks (Scrolls with page height) */
+/* 1. Organic 3D Paper Crumple, Bumps & Fold Marks (Fixed Viewport Broadsheet Surface) */
 .paper-crumple-layer {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -176,7 +177,7 @@
 }
 
 .paper-fold-creases {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -231,9 +232,9 @@
   }
 }
 
-/* 2. Global Full-Page Grain Filter Overlay (scrolls with page & applies to foreground + background) */
+/* 2. Global Full-Page Grain Filter Overlay (Fixed to viewport for ambient micro-print grain) */
 .screen-grain-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -530,6 +531,131 @@
   border: 1px solid var(--color-border);
   margin: 1.5rem auto;
   max-width: 100%;
+}
+
+/* Responsive Newspaper Tabular Data (.newspaper-table-wrapper & table) */
+.prose-newspaper .newspaper-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.75rem 0;
+  border: 1px solid var(--color-border);
+  box-shadow: 3px 3px 0px var(--color-border);
+  background-color: var(--color-surface);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface);
+  filter: url(#ink-bleed-subtle);
+}
+
+.prose-newspaper .newspaper-table-wrapper::-webkit-scrollbar,
+.prose-newspaper table::-webkit-scrollbar {
+  height: 6px;
+}
+
+.prose-newspaper .newspaper-table-wrapper::-webkit-scrollbar-track,
+.prose-newspaper table::-webkit-scrollbar-track {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-rule-subtle);
+}
+
+.prose-newspaper .newspaper-table-wrapper::-webkit-scrollbar-thumb,
+.prose-newspaper table::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 0px;
+}
+
+.prose-newspaper table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.835rem;
+  line-height: 1.55;
+  color: var(--color-primary);
+  background-color: transparent;
+}
+
+/* Fallback if a table is rendered without a wrapper div */
+.prose-newspaper > table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.75rem 0;
+  border: 1px solid var(--color-border);
+  box-shadow: 3px 3px 0px var(--color-border);
+  background-color: var(--color-surface);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface);
+  filter: url(#ink-bleed-subtle);
+}
+
+.prose-newspaper thead {
+  background-color: var(--color-surface);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.prose-newspaper thead tr {
+  border-bottom: 2px solid var(--color-border);
+}
+
+.prose-newspaper th {
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.785rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-border);
+  border-right: 1px solid var(--color-rule-subtle);
+  background-color: var(--color-surface);
+  white-space: nowrap;
+}
+
+.prose-newspaper th:last-child {
+  border-right: none;
+}
+
+.prose-newspaper tbody tr {
+  border-bottom: 1px solid var(--color-rule-subtle);
+  transition: background-color 0.15s ease;
+}
+
+.prose-newspaper tbody tr:last-child {
+  border-bottom: none;
+}
+
+.prose-newspaper tbody tr:nth-child(even) {
+  background-color: rgba(36, 32, 32, 0.02);
+}
+
+:root[data-theme="dark"] .prose-newspaper tbody tr:nth-child(even) {
+  background-color: rgba(244, 228, 228, 0.025);
+}
+
+.prose-newspaper tbody tr:hover {
+  background-color: rgba(36, 32, 32, 0.05);
+}
+
+:root[data-theme="dark"] .prose-newspaper tbody tr:hover {
+  background-color: rgba(244, 228, 228, 0.05);
+}
+
+.prose-newspaper td {
+  padding: 0.65rem 0.85rem;
+  border-right: 1px solid var(--color-rule-subtle);
+  color: var(--color-primary);
+  vertical-align: middle;
+}
+
+.prose-newspaper td:last-child {
+  border-right: none;
+}
+
+.prose-newspaper td code {
+  font-size: 0.8em;
 }
 
 /* Broadsheet View Transition Structure */
