@@ -40,9 +40,7 @@ const satteriKatexPlugin = {
       if (node.tagName === "code") {
         const parent = ctx.parent(node);
         if (parent?.type === "element" && parent.tagName === "pre") return;
-        const classes = Array.isArray(node.properties?.className)
-          ? node.properties.className
-          : [];
+        const classes = Array.isArray(node.properties?.className) ? node.properties.className : [];
         if (classes.includes("math-inline") || classes.includes("language-math")) {
           const tex = ctx.textContent(node).trim();
           const html = katex.renderToString(tex, {
@@ -94,7 +92,7 @@ const satteriTablePlugin = {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://nithika.dev",
+  site: "https://nithikadias.pages.dev.",
   build: {
     inlineStylesheets: "always",
   },
