@@ -1,0 +1,29 @@
+---
+import type { AwardItem } from "../data/portfolio";
+
+interface Props {
+  awards: AwardItem[];
+}
+
+const { awards } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {
+    awards.map((award) => (
+      <article class="border border-primary p-4 bg-surface/35 flex flex-col justify-between">
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="ink-stamp-filled">{award.badge}</span>
+            <time class="text-xs text-muted font-medium">{award.year}</time>
+          </div>
+          <h3 class="font-display text-lg font-bold mb-1">{award.title}</h3>
+          <p class="text-xs sm:text-sm text-secondary leading-relaxed">
+            {award.blurb}
+          </p>
+        </div>
+      </article>
+    ))
+  }
+</div>
+

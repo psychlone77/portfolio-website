@@ -1,0 +1,158 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const allTags = Array.from(
+  new Set(posts.flatMap((post) => post.data.tags)),
+).sort();
+
+function getReadingTime(body = ""): number {
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+}
+---
+
+<Layout
+  title="Blog — Nithika Dias"
+  description="Notes and write-ups on software engineering, security, and projects by Nithika Dias."
+>
+  <div class="container mx-auto px-5 sm:px-8 py-8 max-w-4xl">
+    <Header />
+
+    <main class="broadsheet-content">
+      <!-- Section Header -->
+      <section class="mb-10">
+      <div class="mb-6">
+        <h1 class="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-2">
+          Blog
+        </h1>
+        <p class="text-xs sm:text-sm text-secondary">
+          Write-ups on projects, security, databases, and things I've been working on.
+        </p>
+      </div>
+
+      <!-- Tag Filter Bar -->
+      {
+        allTags.length > 0 && (
+          <div
+            class="newspaper-rule-double py-3 flex flex-wrap items-center gap-2"
+            role="toolbar"
+            aria-label="Filter articles by topic"
+          >
+            <span class="text-xs uppercase tracking-wider text-muted mr-1">
+              Topic:
+            </span>
+            <button
+              type="button"
+              data-tag-filter="all"
+              class="tag-filter-btn ink-stamp-filled cursor-pointer"
+            >
+              All ({posts.length})
+            </button>
+            {allTags.map((tag) => (
+              <button
+                type="button"
+                data-tag-filter={tag}
+                class="tag-filter-btn ink-stamp cursor-pointer hover:bg-primary hover:text-paper transition-colors"
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
+        )
+      }
+    </section>
+
+    <!-- Articles Feed -->
+    <section aria-label="Blog Posts" class="space-y-6 mb-14">
+      {
+        posts.map((post) => {
+          const readingTime = getReadingTime(post.body);
+          return (
+            <article
+              data-post-tags={post.data.tags.join(",")}
+              class="blog-post-card ink-card p-6 relative group cursor-pointer"
+            >
+              <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-secondary mb-2">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {formatDate(post.data.pubDate)}
+                </time>
+                <span class="text-muted">{readingTime} min read</span>
+              </div>
+
+              <h2 class="font-display text-2xl sm:text-3xl font-bold leading-snug mb-2.5">
+                <a
+                  href={`/blog/${post.id}`}
+                  class="hover:underline underline-offset-4 after:absolute after:inset-0"
+                >
+                  {post.data.title}
+                </a>
+              </h2>
+
+              <p class="text-sm text-secondary leading-relaxed text-justify mb-4">
+                {post.data.description}
+              </p>
+
+              <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-dashed border-subtle">
+                <div class="flex flex-wrap gap-1.5">
+                  {post.data.tags.map((tag) => (
+                    <span class="ink-stamp text-secondary">#{tag}</span>
+                  ))}
+                </div>
+
+                <span
+                  class="text-xs font-semibold uppercase tracking-wider underline underline-offset-4 group-hover:opacity-75"
+                >
+                  Read Post →
+                </span>
+              </div>
+            </article>
+          );
+        })
+      }
+    </section>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  function initTagFilters() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>(".tag-filter-btn");
+    const cards = document.querySelectorAll<HTMLElement>(".blog-post-card");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selected = btn.getAttribute("data-tag-filter") || "all";
+
+        buttons.forEach((b) => {
+          const isCurrent = b === btn;
+          b.classList.toggle("ink-stamp-filled", isCurrent);
+          b.classList.toggle("ink-stamp", !isCurrent);
+        });
+
+        cards.forEach((card) => {
+          const tags = (card.getAttribute("data-post-tags") || "")
+            .split(",")
+            .filter(Boolean);
+          const visible = selected === "all" || tags.includes(selected);
+          card.style.display = visible ? "" : "none";
+        });
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initTagFilters);
+</script>

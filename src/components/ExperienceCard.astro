@@ -1,0 +1,71 @@
+---
+interface Props {
+  company: string;
+  position: string;
+  location?: string;
+  startDate: string;
+  endDate: string;
+  story: string;
+  tags?: string[];
+  logo?: string;
+}
+
+const {
+  company,
+  position,
+  location,
+  startDate,
+  endDate,
+  story,
+  tags = [],
+  logo,
+} = Astro.props;
+---
+
+<article class="flex flex-col sm:flex-row gap-5 py-6 first:pt-0 border-b border-dashed border-subtle last:border-b-0">
+  <!-- 1-Bit Ink-Stamp Organization Logo Box -->
+  <div class="w-16 h-16 sm:w-20 sm:h-20 shrink-0 flex items-center justify-center border border-primary p-2 bg-surface/50">
+    {
+      logo ? (
+        <img
+          src={logo}
+          alt={`${company} ink stamp logo`}
+          class="w-full h-full object-contain ink-illustration"
+          loading="lazy"
+        />
+      ) : (
+        <div class="font-display text-2xl font-bold">{company.charAt(0)}</div>
+      )
+    }
+  </div>
+
+  <div class="flex-1">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-baseline gap-1 mb-1.5">
+      <h3 class="font-display text-lg sm:text-xl font-bold leading-snug">
+        {position}
+      </h3>
+      <time class="text-xs font-medium uppercase tracking-wider text-secondary shrink-0">
+        {startDate} — {endDate}
+      </time>
+    </div>
+
+    <p class="text-xs uppercase tracking-wider font-semibold text-secondary mb-2.5">
+      {company}
+      {location && <span class="text-muted font-normal"> • {location}</span>}
+    </p>
+
+    <p class="text-sm leading-relaxed text-justify text-primary mb-3">
+      {story}
+    </p>
+
+    {
+      tags.length > 0 && (
+        <div class="flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <span class="ink-stamp text-secondary">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</article>

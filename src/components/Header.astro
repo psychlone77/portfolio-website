@@ -1,0 +1,352 @@
+---
+interface Props {
+  currentDate?: string;
+}
+
+const formattedToday = new Intl.DateTimeFormat("en-GB", {
+  weekday: "short",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}).format(new Date());
+
+const { currentDate = formattedToday } = Astro.props;
+const currentPath = Astro.url.pathname;
+const isHome = currentPath === "/" || currentPath === "";
+const isBlog = currentPath.startsWith("/blog");
+const expHref = isHome ? "#experience" : "/#experience";
+const projHref = isHome ? "#projects" : "/#projects";
+const awardsHref = isHome ? "#awards" : "/#awards";
+---
+
+<header class="newspaper-header mb-10">
+  <div class="newspaper-masthead-border py-2.5 flex items-center justify-between gap-3 text-xs uppercase tracking-wider">
+    <!-- Desktop Navigation (hidden on mobile, flex on sm+) -->
+    <nav aria-label="Primary Navigation" class="hidden sm:flex items-center gap-4 sm:gap-6">
+      <a
+        href="/"
+        class:list={[
+          "px-1.5 py-0.5 transition-colors",
+          !isBlog
+            ? "ink-stamp-filled"
+            : "hover:underline underline-offset-4 text-primary",
+        ]}
+      >
+        Home
+      </a>
+      <a
+        href="/blog"
+        class:list={[
+          "px-1.5 py-0.5 transition-colors",
+          isBlog
+            ? "ink-stamp-filled"
+            : "hover:underline underline-offset-4 text-primary",
+        ]}
+      >
+        Blog
+      </a>
+      <a
+        href={expHref}
+        class="hover:underline underline-offset-4 text-secondary hover:text-primary"
+      >
+        Experience
+      </a>
+      <a
+        href={projHref}
+        class="hover:underline underline-offset-4 text-secondary hover:text-primary"
+      >
+        Projects
+      </a>
+      <a
+        href={awardsHref}
+        class="hover:underline underline-offset-4 text-secondary hover:text-primary"
+      >
+        Awards
+      </a>
+    </nav>
+
+    <!-- Mobile Top Bar Left Controls (Active Page Badge + [ SECTIONS ▾ ]) -->
+    <div class="flex sm:hidden items-center gap-2">
+      <a
+        href={isBlog ? "/blog" : "/"}
+        class="ink-stamp-filled font-bold"
+        aria-label={`Current Page: ${isBlog ? "Blog" : "Home"}`}
+      >
+        {isBlog ? "Blog" : "Home"}
+      </a>
+      <button
+        id="sections-menu-toggle"
+        type="button"
+        class="ink-stamp cursor-pointer hover:bg-primary hover:text-paper transition-colors flex items-center gap-1.5"
+        aria-expanded="false"
+        aria-controls="sections-dropdown-wrapper"
+        aria-label="Toggle sections directory"
+      >
+        <span>Sections</span>
+        <span id="sections-icon" class="text-[9px] inline-block transition-transform duration-200">▾</span>
+      </button>
+    </div>
+
+    <!-- Right Controls: Date (Desktop) + Theme Toggle (All) -->
+    <div class="flex items-center gap-3">
+      <time id="masthead-date" class="text-xs text-secondary hidden sm:inline">
+        {currentDate}
+      </time>
+      <button
+        id="theme-toggle"
+        type="button"
+        class="ink-stamp cursor-pointer hover:bg-primary hover:text-paper transition-colors"
+        aria-label="Toggle dark or light mode"
+      >
+        <span id="theme-toggle-text">Dark Mode</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Inline Broadsheet Foldout with Smooth Open/Close Accordion Animation -->
+  <div
+    id="sections-dropdown-wrapper"
+    class="sm:hidden"
+    aria-hidden="true"
+  >
+    <div class="min-h-0 overflow-hidden">
+      <div
+        id="sections-dropdown"
+        class="mt-2 pt-3 pb-3 border-b-2 border-primary bg-surface/50 text-xs"
+      >
+        <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-primary/30 uppercase tracking-widest text-[10px] text-secondary font-medium">
+          <span>Index of Sections</span>
+          <time id="mobile-masthead-date">{currentDate}</time>
+        </div>
+        <nav aria-label="Mobile Sections Directory" class="grid grid-cols-1 gap-1">
+          <a
+            href="/"
+            class:list={[
+              "flex items-center justify-between py-1.5 px-2 transition-colors",
+              !isBlog
+                ? "ink-stamp-filled"
+                : "hover:bg-primary/10 text-primary font-medium",
+            ]}
+          >
+            <span>01. Home</span>
+            <span class="text-[10px] opacity-70">Front Page →</span>
+          </a>
+          <a
+            href="/blog"
+            class:list={[
+              "flex items-center justify-between py-1.5 px-2 transition-colors",
+              isBlog
+                ? "ink-stamp-filled"
+                : "hover:bg-primary/10 text-primary font-medium",
+            ]}
+          >
+            <span>02. Blog</span>
+            <span class="text-[10px] opacity-70">Dispatches →</span>
+          </a>
+          <a
+            href={expHref}
+            class="flex items-center justify-between py-1.5 px-2 hover:bg-primary/10 text-secondary hover:text-primary transition-colors font-medium"
+          >
+            <span>03. Experience</span>
+            <span class="text-[10px] opacity-70">Record →</span>
+          </a>
+          <a
+            href={projHref}
+            class="flex items-center justify-between py-1.5 px-2 hover:bg-primary/10 text-secondary hover:text-primary transition-colors font-medium"
+          >
+            <span>04. Projects</span>
+            <span class="text-[10px] opacity-70">Works →</span>
+          </a>
+          <a
+            href={awardsHref}
+            class="flex items-center justify-between py-1.5 px-2 hover:bg-primary/10 text-secondary hover:text-primary transition-colors font-medium"
+          >
+            <span>05. Awards</span>
+            <span class="text-[10px] opacity-70">Honors →</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  #sections-dropdown-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      grid-template-rows 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.2s ease-out,
+      transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #sections-dropdown-wrapper.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #sections-dropdown-wrapper:not(.is-open) {
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      grid-template-rows 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.18s ease-in,
+      transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s 0.24s;
+  }
+
+  #sections-menu-toggle[aria-expanded="true"] #sections-icon {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  function updateThemeButtonLabel(theme: "light" | "dark") {
+    const toggleText = document.getElementById("theme-toggle-text");
+    if (toggleText) {
+      toggleText.textContent = theme === "dark" ? "Light Mode" : "Dark Mode";
+    }
+  }
+
+  function setTheme(theme: "light" | "dark", persist = true) {
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+    updateThemeButtonLabel(theme);
+    if (persist) {
+      localStorage.setItem("theme", theme);
+    }
+  }
+
+  function initHeader() {
+    const currentAttr = document.documentElement.getAttribute("data-theme");
+    updateThemeButtonLabel(currentAttr === "dark" ? "dark" : "light");
+
+    const todayString = new Intl.DateTimeFormat("en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date());
+
+    const dateEl = document.getElementById("masthead-date");
+    if (dateEl) {
+      dateEl.textContent = todayString;
+    }
+
+    const mobileDateEl = document.getElementById("mobile-masthead-date");
+    if (mobileDateEl) {
+      mobileDateEl.textContent = todayString;
+    }
+
+    const toggleButton = document.getElementById("theme-toggle");
+    if (toggleButton) {
+      toggleButton.addEventListener("click", () => {
+        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        setTheme(newTheme, true);
+      });
+    }
+
+    // Mobile Sections Directory Foldout
+    const sectionsToggle = document.getElementById("sections-menu-toggle");
+    const sectionsWrapper = document.getElementById("sections-dropdown-wrapper");
+
+    function closeSectionsMenu(immediate = false) {
+      if (!sectionsWrapper) return;
+      if (immediate) {
+        sectionsWrapper.style.transition = "none";
+        sectionsWrapper.classList.remove("is-open");
+        sectionsWrapper.setAttribute("aria-hidden", "true");
+        if (sectionsToggle) {
+          sectionsToggle.setAttribute("aria-expanded", "false");
+        }
+        setTimeout(() => {
+          if (sectionsWrapper) {
+            sectionsWrapper.style.transition = "";
+          }
+        }, 60);
+        return;
+      }
+      if (sectionsWrapper.classList.contains("is-open")) {
+        sectionsWrapper.classList.remove("is-open");
+        sectionsWrapper.setAttribute("aria-hidden", "true");
+        if (sectionsToggle) {
+          sectionsToggle.setAttribute("aria-expanded", "false");
+        }
+      }
+    }
+
+    function toggleSectionsMenu() {
+      if (!sectionsWrapper) return;
+      const isExpanded = sectionsWrapper.classList.contains("is-open");
+      if (isExpanded) {
+        closeSectionsMenu();
+      } else {
+        sectionsWrapper.classList.add("is-open");
+        sectionsWrapper.setAttribute("aria-hidden", "false");
+        if (sectionsToggle) {
+          sectionsToggle.setAttribute("aria-expanded", "true");
+        }
+      }
+    }
+
+    if (sectionsToggle) {
+      sectionsToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleSectionsMenu();
+      });
+    }
+
+    // Auto-close immediately on link click so it doesn't fight page transition
+    if (sectionsWrapper) {
+      const navLinks = sectionsWrapper.querySelectorAll("a");
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          closeSectionsMenu(true);
+        });
+      });
+    }
+
+    // Close on outside click
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        sectionsWrapper &&
+        sectionsWrapper.classList.contains("is-open") &&
+        target &&
+        !sectionsWrapper.contains(target) &&
+        !sectionsToggle?.contains(target)
+      ) {
+        closeSectionsMenu();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeSectionsMenu();
+      }
+    });
+  }
+
+  // Run on initial load and after every View Transition page swap
+  document.addEventListener("astro:page-load", initHeader);
+
+  // Close when screen is resized to desktop
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 640) {
+      const sectionsWrapper = document.getElementById("sections-dropdown-wrapper");
+      const sectionsToggle = document.getElementById("sections-menu-toggle");
+      if (sectionsWrapper && sectionsWrapper.classList.contains("is-open")) {
+        sectionsWrapper.classList.remove("is-open");
+        sectionsWrapper.setAttribute("aria-hidden", "true");
+        if (sectionsToggle) {
+          sectionsToggle.setAttribute("aria-expanded", "false");
+        }
+      }
+    }
+  });
+</script>

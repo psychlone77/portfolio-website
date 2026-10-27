@@ -1,21 +1,160 @@
 ---
-import Welcome from "../components/Welcome.astro";
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import "../styles/global.css";
-import "@fontsource/ibm-plex-mono/100.css";
-import "@fontsource/ibm-plex-mono/200.css";
-import "@fontsource/ibm-plex-mono/300.css";
-import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/ibm-plex-mono/500.css";
-import "@fontsource/ibm-plex-mono/600.css";
-import "@fontsource/ibm-plex-mono/700.css";
-// Supports weights 100-800
-import "@fontsource-variable/jetbrains-mono/wght.css";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Section from "../components/Section.astro";
+import ExperienceCard from "../components/ExperienceCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import AwardsSection from "../components/AwardsSection.astro";
+import {
+  personalInfo,
+  experiences,
+  projects,
+  awards,
+  education,
+} from "../data/portfolio";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const recentPosts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+}
 ---
 
-<Layout>
-  <Welcome />
+<Layout title="Nithika Dias — Portfolio">
+  <div class="container mx-auto px-5 sm:px-8 py-8 max-w-4xl">
+    <Header />
+
+    <main class="broadsheet-content">
+      <Hero
+        name={personalInfo.name}
+        tagline={personalInfo.tagline}
+        bio={personalInfo.bio}
+        imageUrl={personalInfo.imageUrl}
+        socials={personalInfo.socials}
+      />
+
+    <!-- Experience -->
+    <Section id="experience" title="Experience">
+      <div>
+        {
+          experiences.map((exp) => (
+            <ExperienceCard
+              company={exp.company}
+              position={exp.position}
+              location={exp.location}
+              startDate={exp.startDate}
+              endDate={exp.endDate}
+              story={exp.story}
+              tags={exp.tags}
+              logo={exp.logo}
+            />
+          ))
+        }
+      </div>
+    </Section>
+
+    <!-- Projects -->
+    <Section id="projects" title="Projects">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {
+          projects.map((project) => (
+            <ProjectCard
+              title={project.title}
+              kicker={project.kicker}
+              story={project.story}
+              stack={project.stack}
+              link={project.link}
+            />
+          ))
+        }
+      </div>
+    </Section>
+
+    <!-- Blog -->
+    {
+      recentPosts.length > 0 && (
+        <Section id="blog" title="Recent Posts">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+            {recentPosts.map((post) => (
+              <article class="ink-card p-5 flex flex-col justify-between relative group cursor-pointer">
+                <div>
+                  <div class="flex items-center justify-between text-xs text-secondary mb-2">
+                    <time datetime={post.data.pubDate.toISOString()}>
+                      {formatDate(post.data.pubDate)}
+                    </time>
+                  </div>
+                  <h3 class="font-display text-xl font-bold leading-snug mb-2">
+                    <a
+                      href={`/blog/${post.id}`}
+                      class="hover:underline underline-offset-4 after:absolute after:inset-0"
+                    >
+                      {post.data.title}
+                    </a>
+                  </h3>
+                  <p class="text-xs sm:text-sm text-secondary leading-relaxed mb-4">
+                    {post.data.description}
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-dashed border-subtle text-xs">
+                  <div class="flex flex-wrap gap-1">
+                    {post.data.tags.slice(0, 2).map((tag) => (
+                      <span class="ink-stamp">#{tag}</span>
+                    ))}
+                  </div>
+                  <span
+                    class="font-semibold underline underline-offset-4 group-hover:opacity-75"
+                  >
+                    Read →
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div class="text-right">
+            <a
+              href="/blog"
+              class="ink-stamp hover:bg-primary hover:text-paper transition-colors font-semibold"
+            >
+              View All Posts →
+            </a>
+          </div>
+        </Section>
+      )
+    }
+
+    <!-- Awards -->
+    <Section id="awards" title="Awards & Achievements">
+      <AwardsSection awards={awards} />
+    </Section>
+
+    <!-- Education -->
+    <Section id="education" title="Education">
+      <div>
+        {
+          education.map((edu) => (
+            <ExperienceCard
+              company={edu.institution}
+              position={edu.degree}
+              startDate={edu.startDate}
+              endDate={edu.endDate}
+              story={edu.note}
+              tags={edu.badges}
+              logo={edu.logo}
+            />
+          ))
+        }
+      </div>
+    </Section>
+    </main>
+  </div>
 </Layout>
